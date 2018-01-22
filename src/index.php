@@ -1,26 +1,34 @@
 <?php require_once __DIR__ . '/includes/functions.php'; ?>
 <?php
-
-  $id = get_redirect_id();
-
-  if($id != -1)
+  if(isset($_GET['id']))
   {
-    $url = get_redirect_uri($id);
+    $id = get_redirect_id();
 
-    if(isset($url))
+    if($id != -1)
     {
-      increment_hit_count($id, $url);
+      $url = get_redirect_uri($id);
 
-      $test = is_test_mode();
-      write_redirect($url, !is_test_mode());
+      if(isset($url))
+      {
+        increment_hit_count($id, $url);
+
+        $test = is_test_mode();
+        write_redirect($url, !is_test_mode());
+      }
+      else
+      {
+        write_not_found();
+      }
     }
     else
     {
-      write_not_found();
-    }
+      write_bad_request('Failed to redirect', 'URL ID not specified.');
+    }  
   }
   else
   {
-    write_bad_request('Failed to redirect', 'URL ID not specified.');
-  }  
+    $title = get_title();
+    $url = get_home_page_url();
+    echo(get_html_document($title, '<h1>' . $title . '</h1><p>Click <a href=\'' . $url . '\'>here</a> to visit the home page.</p>'));
+  }
 ?>

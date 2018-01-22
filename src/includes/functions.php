@@ -42,6 +42,8 @@ function write_bad_request($title, $reason)
 {
   $html = get_html_document($title, $reason);
 
+  write_error(400);
+
   header('HTTP/1.1 400 Bad Request');
   header('Content-Type: text/html');
   header('Content-Length: ' . strlen($html));
@@ -52,6 +54,8 @@ function write_bad_request($title, $reason)
 function write_not_found()
 {
   $html = get_html_document('Not found', 'The requested resource cannot be found.');
+
+  write_error(404);
 
   header('HTTP/1.1 404 Not Found');
   header('Content-Type: text/html');
@@ -164,6 +168,7 @@ function increment_hit_count($id, $url)
   try
   {
     $db = create_database();
+
     $timestamp = time();
     $address = get_client_ip_address();
 
@@ -210,39 +215,94 @@ function get_api_key()
   return $key;
 }
 
-function is_valid_apikey()
+function get_config_value($name)
 {
   try
   {
-    $result = false;
-    $key = get_api_key();
+    $db = create_database();
 
-    if(isset($key) && $key !== '')
+    $result = null;
+
+    $sql = $db->prepare('SELECT [Value] FROM [Config] WHERE [Name] = ?');
+
+    if($sql->execute(array($name)))
     {
-      $db = create_database();
-
-      $sql = $db->prepare('SELECT [Value] FROM [Config] WHERE [Name] = ?');
-
-      if($sql->execute(array('ApiKey')))
-      {
-        $row = $sql->fetch();
-        
-        if($row)
-        {
-          $result = $row['Value'] == $key;
-        }
-      }
+      $row = $sql->fetch();
       
-      $db = null;
+      if($row)
+      {
+        $result = $row['Value'];
+      }
     }
+    
+    $db = null;
   }
   catch(Exception $e)
+  {
+    $result = null;
+  }
+
+  return $result;
+}
+
+function is_valid_apikey()
+{
+  $key = get_api_key();
+
+  if(isset($key) && $key !== '')
+  {
+    $result = get_config_value('ApiKey') == $key;
+  }
+  else
   {
     $result = false;
   }
 
   return $result;
 }
+
+function get_title()
+{
+  return get_config_value('Title');
+}
+
+function get_home_page_url()
+{
+  return get_config_value('HomePage');
+}
+
+function get_system_version()
+{
+  return get_config_value('SystemVersion');
+}
+
+function get_schema_version()
+{
+  try
+  {
+    $db = create_database();
+    
+    $version = null;
+    $result = $db->query('SELECT [SchemaVersion] FROM [SystemVersion];');
+
+    if($result)
+    {
+      $row = $result->fetch();
+
+      if($row)
+      {
+        $version = $row['SchemaVersion'];
+      }
+    }
+
+    $db = null;
+  }
+  catch(Exception $e)
+  {
+    $version = null;
+  }
+
+  return $version;}
 
 function create_database()
 {
@@ -251,7 +311,42 @@ function create_database()
 
 function get_html_document($title, $html)
 {
-  return '<!DOCTYPE html>
+  return get_header_html($title) . '<div class="wrapper">' . $html . '</div>' . get_footer_html();
+}
+
+function write_error($code)
+{
+  try
+  {
+    $db = create_database();
+
+    $url = $_SERVER['REQUEST_URI'];
+    $timestamp = time();
+    $address = get_client_ip_address();
+
+    $sql = $db->prepare('INSERT INTO [Error] ([Timestamp], [IpAddress], [Url], [StatusCode]) VALUES (?, ?, ?, ?)');
+
+    $sql->execute(array($timestamp, $address, $url, $code));
+
+    $db = null;
+  }
+  catch(Exception $e)
+  {
+    // TODO: What now
+  }
+}
+
+function get_footer_html()
+{
+  return '<footer>
+  <p>Copyright &copy; 2018 Cyotek Ltd. All Rights Reserved.</p>
+  <p>System Version ' . get_system_version() . ' / Schema Version ' . get_schema_version() . '</p>
+</footer></body></html>';
+}
+
+function get_header_html($title)
+{
+  echo('<!DOCTYPE html>
   <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -259,12 +354,16 @@ function get_html_document($title, $html)
     <title>' . $title . '</title>
     <link rel="stylesheet" type="text/css" href="assets/styles.css" />
   </head>
-  <body>
-  <div class="wrapper">
-    ' . $html . '
-  </div>
-  </body>
-  </html>
-  ';
+  <body>');
+}
+
+function write_header_html($title)
+{
+  echo(get_header_html($title));
+}
+
+function write_footer_html()
+{
+  echo(get_footer_html());
 }
 ?>

@@ -41,9 +41,18 @@ CREATE INDEX IF NOT EXISTS 'IX_Activity_UrlId' ON 'Activity'
   'UrlId'
 );
 
+CREATE TABLE IF NOT EXISTS 'Error' 
+(
+  'Id'          INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+, 'Timestamp'   INTEGER NOT NULL
+, 'IpAddress'   TEXT    NOT NULL
+, 'Url'         TEXT    NOT NULL
+, 'StatusCode'  INTEGER NOT NULL
+);
+
 CREATE VIEW IF NOT EXISTS 'SystemVersion'
 AS
-   SELECT '1.0.0' AS [SchemaVersion];
+   SELECT '1.1.0' AS [SchemaVersion];
 
 CREATE VIEW IF NOT EXISTS 'ActivitySummary'
 AS
@@ -71,6 +80,10 @@ LEFT JOIN [Activity] [H]
        ON [H].[UrlId] = [R].[Id]
  GROUP BY [R].[Id];
        
-INSERT INTO [Config] ([Name], [Value]) VALUES ('ApiKey', ''); -- make sure you add a real value here (such as GUID) to use pages "protected" with the key. Blank keys are rejected.
+INSERT INTO [Config] ([Name], [Value]) VALUES ('ApiKey'  , '');                       -- make sure you add a real value here (such as GUID) to use pages "protected" with the key. Blank keys are rejected.
+INSERT INTO [Config] ([Name], [Value]) VALUES ('Title'   , 'go.cyotek.com');          -- title used for a friendly 200 page
+INSERT INTO [Config] ([Name], [Value]) VALUES ('HomePage', 'https://www.cyotek.com'); -- url of site to display in friendly 200 page
+
+INSERT INTO [Config] ([Name], [Value]) VALUES ('SystemVersion', '1.1.0');
  
 COMMIT;

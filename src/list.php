@@ -10,15 +10,7 @@
     $result = $db->query('SELECT [Id], [Enabled], [Title], [Slug], [Url], [LastHit], [HitCount] FROM [UrlSummary] ORDER BY [Title]');
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>Redirects Summary</title>
-  <link rel="stylesheet" type="text/css" href="assets/styles.css" />
-</head>
-<body>
+<?php write_header_html('Redirects Summary') ?>
 <div class="wrapper wrapper-90">
   <h1>Redirects Summary</h1>
   <table>
@@ -47,9 +39,8 @@
       <?php } ?>
     </tbody>
   </table>
-  </div>
-</body>
-</html>
+</div>
+<?php write_footer_html() ?>
 
 <?php
    $db = null;

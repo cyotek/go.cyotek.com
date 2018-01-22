@@ -2,21 +2,21 @@
 <?php
   if(!is_valid_apikey())
   {
-    write_bad_request('Activity', 'Invalid API key.');
+    write_bad_request('Errors', 'Invalid API key.');
   }
   else
   {
     $db = create_database();
-    $result = $db->query('SELECT [Title], [Url], [Timestamp], [IpAddress] FROM [ActivitySummary] ORDER BY [Timestamp] DESC LIMIT 1000');
+    $result = $db->query('SELECT [Url], [Timestamp], [IpAddress], [StatusCode] FROM [Error] ORDER BY [Timestamp] DESC LIMIT 1000');
 ?>
 
-<?php write_header_html('Activity') ?>
+<?php write_header_html('Errors') ?>
 <div class="wrapper wrapper-90">
-  <h1>Activity</h1>
+  <h1>Errors</h1>
   <table>
     <thead>
       <tr>
-        <th>Title</th>
+        <th>Status Code</th>
         <th>Url</th>
         <th>Timestamp</th>
         <th>Client</th>
@@ -25,7 +25,7 @@
     <tbody>
     <?php foreach($result as $row) { ?>
       <tr>
-        <td><?php echo($row['Title']) ?></td>
+        <td><?php echo($row['StatusCode']) ?></td>
         <td><?php echo($row['Url']) ?></td>
         <td><?php echo(date('Y-m-d H:i:s', $row['Timestamp'])) ?></td>
         <td><?php echo($row['IpAddress']) ?></td>

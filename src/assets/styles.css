@@ -34,30 +34,42 @@ a:active {
   color: #3894DD;
 }
 
-.wrapper {
-  background-color: #fff;
-  padding: 20px;
-  border: 1px dotted #ccc;
+.wrapper,
+footer {
   width: 520px;
-  margin-top: 40px;
   margin-left: auto;
   margin-right: auto;
+  padding: 20px;
 }
 
-.wrapper-90 {
-  width: 90%;
+.wrapper {
+  margin-top: 40px;
+  background-color: #fff;
+  border: 1px dotted #ccc;
 }
 
-p {
-  text-align: center;
-}
-
-.wrapper p:first-child, .wrapper h1 {
+.wrapper p:first-child,
+.wrapper h1 {
   margin-top: 0;
 }
 
 .wrapper p:last-child {
   margin-bottom: 0;
+}
+
+footer {
+  margin-top: 2em;
+  border-top: 1px solid #ccc;
+}
+
+footer p {
+  margin: 0;
+  text-align: center;
+  color: #aaa;
+}
+
+.wrapper-90 {
+  width: 90%;
 }
 
 table {
