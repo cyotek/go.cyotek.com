@@ -1,3 +1,4 @@
 
 *.db
 res/redirects.db.data.sql
+src/.htaccess

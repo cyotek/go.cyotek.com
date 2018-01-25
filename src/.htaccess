@@ -1,1 +1,6 @@
+RewriteEngine On
+
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^(.*)$ https://go.cyotek.com/$1 [R=301,L,NC]
+
 Options -Indexes

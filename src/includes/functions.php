@@ -83,7 +83,7 @@ function get_id_from_slug($slug)
 {
   try
   {
-    $db = create_database();
+    $db = get_database_connection();
     $id = -1;
 
     $sql = $db->prepare('SELECT [Id] FROM [Url] WHERE [Slug] = ?');
@@ -112,7 +112,7 @@ function get_redirect_uri($id)
 {
   try
   {
-    $db = create_database();
+    $db = get_database_connection();
     $uri = null;
 
     $sql = $db->prepare('SELECT [Enabled], [Url] FROM [Url] WHERE [Id] = ?');
@@ -167,7 +167,7 @@ function increment_hit_count($id, $url)
 {
   try
   {
-    $db = create_database();
+    $db = get_database_connection();
 
     $timestamp = time();
     $address = get_client_ip_address();
@@ -219,7 +219,7 @@ function get_config_value($name)
 {
   try
   {
-    $db = create_database();
+    $db = get_database_connection();
 
     $result = null;
 
@@ -251,7 +251,7 @@ function is_valid_apikey()
 
   if(isset($key) && $key !== '')
   {
-    $result = get_config_value('ApiKey') == $key;
+    $result = get_config_value('ApiKey') === $key;
   }
   else
   {
@@ -280,7 +280,7 @@ function get_schema_version()
 {
   try
   {
-    $db = create_database();
+    $db = get_database_connection();
     
     $version = null;
     $result = $db->query('SELECT [SchemaVersion] FROM [SystemVersion];');
@@ -304,9 +304,14 @@ function get_schema_version()
 
   return $version;}
 
-function create_database()
+function get_database_connection()
 {
-  return new PDO('sqlite:data/redirects.db');
+  $connection = new PDO('sqlite:data/redirects.db');
+
+  $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+  return $connection;
 }
 
 function get_html_document($title, $html)
@@ -318,7 +323,7 @@ function write_error($code)
 {
   try
   {
-    $db = create_database();
+    $db = get_database_connection();
 
     $url = $_SERVER['REQUEST_URI'];
     $timestamp = time();

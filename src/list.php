@@ -6,7 +6,7 @@
   }
   else
   {
-    $db = create_database();
+    $db = get_database_connection();
     $result = $db->query('SELECT [Id], [Enabled], [Title], [Slug], [Url], [LastHit], [HitCount] FROM [UrlSummary] ORDER BY [Title]');
 ?>
 

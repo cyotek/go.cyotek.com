@@ -6,7 +6,7 @@
   }
   else
   {
-    $db = create_database();
+    $db = get_database_connection();
     $result = $db->query('SELECT [Title], [Url], [Timestamp], [IpAddress] FROM [ActivitySummary] ORDER BY [Timestamp] DESC LIMIT 1000');
 ?>
 
