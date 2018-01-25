@@ -22,18 +22,23 @@ Populate the `Url` table with URL's.
 
 There are two configuration settings in the `Config` table, **Title** and **HomePage**. Use these to configure the information displayed when viewing index.php without providing a redirect ID, which is slightly more friendly than display an "not set" error.
 
-Using the management pages
---------------------------
+Calling the redirect
+--------------------
 
-There are three _very_ basic overview pages, `activity.php`, `error.php` and `list.php`. These are "protected" via the use of an API key, which can be supplied by either the `ApiKey` header or `apikey` query string parameter.
+Call `index.php` with a `id` query string parameter that contains either the numeric ID or slug of the URL to redirect.
 
-To configure the api key, change the value of the **ApiKey** entry in the `Config` table. Note that if the key is left blank, the management pages will not load. 
-
-There are no configuration pages for adding, removing or updating URL entries - you'd need to dig into the database to do that. I do plan on adding them at some point, but at the same time I don't want to worry about injection attacks or weak security given my beginners knowledge of PHP.
-
-Parameter injection
--------------------
+### Parameter injection
 
 If your URL entry includes `{name}` sequences, then the redirect will try and replace these with query string parameters.
 
-For example, if you had a URL entry named `docs` set with the URL pattern `https://docs.cyotek.com/cyowcopy/{version}/`, you could call it as `?id=docs&version=1.2`, resulting in a final URL of `https://docs.cyotek.com/cyowcopy/1.2/`. Missing parameters will be substituted with blank values.
+For example, if you had a URL entry named `docs` set with the URL pattern `https://docs.cyotek.com/cyowcopy/{version}/`, you could call it as `?id=docs&version=1.2`, resulting in a final URL of `https://docs.cyotek.com/cyowcopy/1.2/`. Missing parameters will be substituted with blank values. 
+
+Using the management pages
+--------------------------
+
+There are three basic overview pages, `activity.php`, `error.php` and `list.php`. These are "protected" via the use of an API key, which can be supplied by either the `ApiKey` header or `apikey` query string parameter.
+
+To configure the api key, change the value of the **ApiKey** entry in the `Config` table. Note that if the key is left blank, the management pages will not load. 
+
+> There are no configuration pages for adding, removing or updating URL entries - you'd need to dig into the database to do that. I do plan on adding them at some point, but at the same time I don't want to worry about injection attacks or weak security given my beginners knowledge of PHP.
+
