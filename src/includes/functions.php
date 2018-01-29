@@ -38,6 +38,19 @@ function is_test_mode()
   return $result;
 }
 
+function write_forbidden($title, $reason)
+{
+  $html = get_html_document($title, $reason);
+
+  write_error(403);
+
+  header('HTTP/1.1 403 Forbidden');
+  header('Content-Type: text/html');
+  header('Content-Length: ' . strlen($html));
+
+  echo $html;
+}
+
 function write_bad_request($title, $reason)
 {
   $html = get_html_document($title, $reason);

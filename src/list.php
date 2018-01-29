@@ -2,7 +2,7 @@
 <?php
   if(!is_valid_apikey())
   {
-    write_bad_request('Redirects Summary', 'Invalid API key.');
+    write_forbidden('Redirects Summary', 'Invalid API key.');
   }
   else
   {

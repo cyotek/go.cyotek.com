@@ -2,7 +2,7 @@
 <?php
   if(!is_valid_apikey())
   {
-    write_bad_request('Errors', 'Invalid API key.');
+    write_forbidden('Errors', 'Invalid API key.');
   }
   else
   {
