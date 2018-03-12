@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+1.2.0
+-----
+
+### Added
+* Added new `AnonymizeAddresses` setting. When set to `true` (default), IP addresses will be anonymised to a /24 subnet (IPv4) or a /64 subnet (IPv6)
+
 1.1.0
 -----
 

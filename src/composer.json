@@ -1,0 +1,5 @@
+{
+    "require": {
+        "geertw/ip-anonymizer": "^1.1"
+    }
+}

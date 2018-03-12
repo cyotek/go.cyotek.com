@@ -80,10 +80,11 @@ LEFT JOIN [Activity] [H]
        ON [H].[UrlId] = [R].[Id]
  GROUP BY [R].[Id];
        
-INSERT INTO [Config] ([Name], [Value]) VALUES ('ApiKey'  , '');                       -- make sure you add a real value here (such as GUID) to use pages "protected" with the key. Blank keys are rejected.
-INSERT INTO [Config] ([Name], [Value]) VALUES ('Title'   , 'go.cyotek.com');          -- title used for a friendly 200 page
-INSERT INTO [Config] ([Name], [Value]) VALUES ('HomePage', 'https://www.cyotek.com'); -- url of site to display in friendly 200 page
+INSERT INTO [Config] ([Name], [Value]) VALUES ('ApiKey'            , '');                       -- make sure you add a real value here (such as GUID) to use pages "protected" with the key. Blank keys are rejected.
+INSERT INTO [Config] ([Name], [Value]) VALUES ('Title'             , 'go.cyotek.com');          -- title used for a friendly 200 page
+INSERT INTO [Config] ([Name], [Value]) VALUES ('HomePage'          , 'https://www.cyotek.com'); -- url of site to display in friendly 200 page
+INSERT INTO [Config] ([Name], [Value]) VALUES ('AnonymizeAddresses', 'true');                   -- should IP addresses be anonymised?
 
-INSERT INTO [Config] ([Name], [Value]) VALUES ('SystemVersion', '1.1.0');
+INSERT INTO [Config] ([Name], [Value]) VALUES ('SystemVersion', '1.2.0');
  
 COMMIT;
