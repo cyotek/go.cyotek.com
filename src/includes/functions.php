@@ -2,7 +2,7 @@
 use geertw\IpAnonymizer\IpAnonymizer;
 require 'vendor/autoload.php';
 
-function should_anonomise_ip_address()
+function should_anonymise_ip_address()
 {
   return filter_var(get_config_value('AnonymizeAddresses'), FILTER_VALIDATE_BOOLEAN);
 }
@@ -215,7 +215,7 @@ function get_client_ip_address()
     $address = $_SERVER['REMOTE_ADDR'];
   }
 
-  if(should_anonomise_ip_address())
+  if(should_anonymise_ip_address())
   {
     $address = IpAnonymizer::anonymizeIp($address);
   }

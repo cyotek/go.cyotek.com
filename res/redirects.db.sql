@@ -85,6 +85,6 @@ INSERT INTO [Config] ([Name], [Value]) VALUES ('Title'             , 'go.cyotek.
 INSERT INTO [Config] ([Name], [Value]) VALUES ('HomePage'          , 'https://www.cyotek.com'); -- url of site to display in friendly 200 page
 INSERT INTO [Config] ([Name], [Value]) VALUES ('AnonymizeAddresses', 'true');                   -- should IP addresses be anonymised?
 
-INSERT INTO [Config] ([Name], [Value]) VALUES ('SystemVersion', '1.2.0');
+INSERT INTO [Config] ([Name], [Value]) VALUES ('SystemVersion', '1.3.0');
  
 COMMIT;

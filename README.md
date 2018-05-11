@@ -12,6 +12,7 @@ Requirements
 
 * PHP with PDO and SQLite support
 * Raw access to the database as there's no management interface to change settings or add new URI's.
+* [Composer](https://getcomposer.org/) is required for downloading vendor packages
 
 Setup
 -----
@@ -31,14 +32,20 @@ Call `index.php` with a `id` query string parameter that contains either the num
 
 If your URL entry includes `{name}` sequences, then the redirect will try and replace these with query string parameters.
 
-For example, if you had a URL entry named `docs` set with the URL pattern `https://docs.cyotek.com/cyowcopy/{version}/`, you could call it as `?id=docs&version=1.2`, resulting in a final URL of `https://docs.cyotek.com/cyowcopy/1.2/`. Missing parameters will be substituted with blank values. 
+For example, if you had a URL entry named `docs` set with the URL pattern `https://docs.cyotek.com/cyowcopy/{version}/`, you could call it as `?id=docs&version=1.2`, resulting in a final URL of `https://docs.cyotek.com/cyowcopy/1.2/`. Missing parameters will be substituted with blank values.
+
+GDPR and Privacy
+----------------
+
+If the `AnonymizeAddresses` configuration property is set to `true`, IP addresses will be automatically anonymised.
 
 Using the management pages
 --------------------------
 
-There are three basic overview pages, `activity.php`, `error.php` and `list.php`. These are "protected" via the use of an API key, which can be supplied by either the `ApiKey` header or `apikey` query string parameter.
+There are several basic overview pages, `activity.php`, `error.php` and `list.php`. These are "protected" via the use of an API key, which can be supplied by either the `ApiKey` header or `apikey` query string parameter.
 
-To configure the api key, change the value of the **ApiKey** entry in the `Config` table. Note that if the key is left blank, the management pages will not load. 
+To configure the API key, change the value of the **ApiKey** entry in the `Config` table. Note that if the key is left blank, the management pages will not load. 
 
 > There are no configuration pages for adding, removing or updating URL entries - you'd need to dig into the database to do that. I do plan on adding them at some point, but at the same time I don't want to worry about injection attacks or weak security given my beginners knowledge of PHP.
 
+Two additional pages exist, also protected via the API key. The first, `config.php` simply lists the contents of the `Config` table. The second, `migrate.php` does a basic check of all IP addresses in the database, and anonymises them (if the `AnonymizeAddresses` parameter is set) 
