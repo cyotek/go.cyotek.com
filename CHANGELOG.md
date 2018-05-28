@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+1.4.0
+-----
+### Added
+* Added rudimentary Add URL form to the redirects summary page
+
+### Fixed
+* Migration didn't anonymise addresses in the `Error` table
+* Added `die` to error routines to avoid dropping into main script if the caller wasn't using conditions 
+
 1.3.0
 -----
 ### Added

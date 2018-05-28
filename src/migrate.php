@@ -2,30 +2,15 @@
 <?php
 use geertw\IpAnonymizer\IpAnonymizer;
 
-if(!is_valid_apikey())
-  {
-    write_forbidden('Migrate Data', 'Invalid API key.');
-  }
-  else
-  {
-?>
-
-<?php write_header_html('Migrate Data') ?>
-<div class="wrapper wrapper-90">
-  <h1>Data Migration</h1>
-
-<?php 
-
-if(should_anonymise_ip_address())
+function anonymise_table($tableName)
 {
   $db = get_database_connection();
-  $result = $db->query('SELECT [Id], [IpAddress] FROM [Activity];');
+  $result = $db->query('SELECT [Id], [IpAddress] FROM [' . $tableName . '];');
   $total = 0;
-  $skipTotal = 0;
 
-  $sql = "UPDATE [Activity] "
-                . "SET [IpAddress] = :address "
-                . "WHERE [Id] = :id";
+  $sql = 'UPDATE [' . $tableName . '] '
+                . 'SET [IpAddress] = :address '
+                . 'WHERE [Id] = :id';
 
   $stmt = $db->prepare($sql);
 
@@ -42,15 +27,33 @@ if(should_anonymise_ip_address())
       $stmt->execute();
       $total += $stmt->rowCount();
     }    
-    else
-    {
-      $skipTotal ++;
-    }
   }
 
-  $db = null;
+  $db = null; 
 
-  echo '<p>' . $total . ' records updated (' . $skipTotal . ' records skipped).</p>';
+  return $total;
+}
+
+if(!is_valid_apikey())
+  {
+    write_forbidden('Migrate Data', 'Invalid API key.');
+  }
+  else
+  {
+?>
+
+<?php write_header_html('Migrate Data') ?>
+<div class='wrapper wrapper-90'>
+  <h1>Data Migration</h1>
+
+<?php 
+
+if(should_anonymise_ip_address())
+{
+  $total = anonymise_table('Activity');
+  $total += anonymise_table('Error');
+
+  echo '<p>' . $total . ' records updated.</p>';
 }
 else
 {

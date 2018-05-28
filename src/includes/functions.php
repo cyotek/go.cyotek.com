@@ -57,6 +57,8 @@ function write_forbidden($title, $reason)
   header('Content-Length: ' . strlen($html));
 
   echo $html;
+
+  die();
 }
 
 function write_bad_request($title, $reason)
@@ -70,6 +72,8 @@ function write_bad_request($title, $reason)
   header('Content-Length: ' . strlen($html));
 
   echo $html;
+
+  die();
 }
 
 function write_not_found()
@@ -83,6 +87,8 @@ function write_not_found()
   header('Content-Length: ' . strlen($html));
 
   echo $html;
+
+  die();
 }
 
 function write_redirect($url, $includeLocationHeader)
@@ -98,6 +104,8 @@ function write_redirect($url, $includeLocationHeader)
   header('Content-Length: ' . strlen($html));
 
   echo $html;
+
+  die();
 }
 
 function get_id_from_slug($slug)
@@ -396,5 +404,26 @@ function write_header_html($title)
 function write_footer_html()
 {
   echo(get_footer_html());
+}
+
+function is_null_or_empty($value)
+{
+  return !(isset($value) && strlen($value) > 0);
+}
+
+function add_redirect($title, $slug, $url)
+{
+  $db = get_database_connection();
+
+  $sql = 'INSERT INTO [Url] ([Enabled], [Title], [Slug], [Url]) VALUES (1, :title, :slug, :url);';
+
+  $stmt = $db->prepare($sql);
+  $stmt->bindValue(':title', $title);
+  $stmt->bindValue(':slug', $slug);
+  $stmt->bindValue(':url', $url);
+
+  $stmt->execute();
+
+  $db = null; 
 }
 ?>
