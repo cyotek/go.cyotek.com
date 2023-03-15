@@ -1,51 +1,87 @@
-Simple PHP Redirect
-===================
+# Simple PHP Redirect
 
-This is a _really_ simple project. And as it's only my second foray into PHP, I doubt it's very well coded.
+This is a _really_ simple project. And as it's only my second
+foray into PHP, I doubt it's very well coded.
 
-The application is just a URI redirect, so for example if I wanted to link to the Cyotek Blog (which is currently at https://www.cyotek.com/blog) from an application I could create an entry named "blog" pointing to that URL and then my application would call "https://go.cyotek.com?id=blog". If this was later changed to https://blog.cyotek.com/, I can update the entry in the database and existing code will find the new location.
+The application is just a URI redirect, so for example if I
+wanted to link to the Cyotek Blog (which is currently at
+<https://www.cyotek.com/blog>) from an application I could
+create an entry named "blog" pointing to that URL and then my
+application would call `https://go.cyotek.com?id=blog`. If this
+was later changed to <https://blog.cyotek.com/> (which it was!),
+I can update the entry in the database and existing code will
+find the new location.
 
-Of course, if I _did_ do that, I'd still have put some sort of redirect in place which makes this project a bit moot for URL's that you have full control over. However if you make use of external services such as PayPal then this project could be more useful. Another slight benefit is that URL's should be slightly shorter, although this isn't really the goal of this project. 
+Of course, if I _did_ do that, I'd still have put some sort of
+redirect in place which makes this project a bit moot for URL's
+that you have full control over. However if you make use of
+external services such as PayPal then this project could be more
+useful. Another slight benefit is that URL's should be slightly
+shorter, although this isn't really the goal of this project.
 
-Requirements
-------------
+## Requirements
 
 * PHP with PDO and SQLite support
-* Raw access to the database as there's no management interface to change settings or add new URI's.
-* [Composer](https://getcomposer.org/) is required for downloading vendor packages
+* Raw access to the database as there's no management interface
+  to change settings or add new URI's.
+* [Composer][composer] is required for
+  downloading vendor packages
 
-Setup
------
+## Setup
 
-Create a SQLite database named `redirects.db` and apply `redirects.db.sql` to this database.
+Create a SQLite database named `redirects.db` and apply
+`redirects.db.sql` to this database.
 
 Populate the `Url` table with URL's.
 
-There are two configuration settings in the `Config` table, **Title** and **HomePage**. Use these to configure the information displayed when viewing index.php without providing a redirect ID, which is slightly more friendly than display an "not set" error.
+There are two configuration settings in the `Config` table,
+**Title** and **HomePage**. Use these to configure the
+information displayed when viewing index.php without providing a
+redirect ID, which is slightly more friendly than display an
+"not set" error.
 
-Calling the redirect
---------------------
+## Calling the redirect
 
-Call `index.php` with a `id` query string parameter that contains either the numeric ID or slug of the URL to redirect.
+Call `index.php` with a `id` query string parameter that
+contains either the numeric ID or slug of the URL to redirect.
 
 ### Parameter injection
 
-If your URL entry includes `{name}` sequences, then the redirect will try and replace these with query string parameters.
+If your URL entry includes `{name}` sequences, then the redirect
+will try and replace these with query string parameters.
 
-For example, if you had a URL entry named `docs` set with the URL pattern `https://docs.cyotek.com/cyowcopy/{version}/`, you could call it as `?id=docs&version=1.2`, resulting in a final URL of `https://docs.cyotek.com/cyowcopy/1.2/`. Missing parameters will be substituted with blank values.
+For example, if you had a URL entry named `docs` set with the
+URL pattern `https://docs.cyotek.com/cyowcopy/{version}/`, you
+could call it as `?id=docs&version=1.2`, resulting in a final
+URL of `https://docs.cyotek.com/cyowcopy/1.2/`. Missing
+parameters will be substituted with blank values.
 
-GDPR and Privacy
-----------------
+## GDPR and Privacy
 
-If the `AnonymizeAddresses` configuration property is set to `true`, IP addresses will be automatically anonymised.
+If the `AnonymizeAddresses` configuration property is set to
+`true`, IP addresses will be automatically anonymised.
 
-Using the management pages
---------------------------
+## Using the management pages
 
-There are several basic overview pages, `activity.php`, `error.php` and `list.php`. These are "protected" via the use of an API key, which can be supplied by either the `ApiKey` header or `apikey` query string parameter.
+There are several basic overview pages, `activity.php`,
+`error.php` and `list.php`. These are "protected" via the use of
+an API key, which can be supplied by either the `ApiKey` header
+or `apikey` query string parameter.
 
-To configure the API key, change the value of the **ApiKey** entry in the `Config` table. Note that if the key is left blank, the management pages will not load. 
+To configure the API key, change the value of the **ApiKey**
+entry in the `Config` table. Note that if the key is left blank,
+the management pages will not load.
 
-> There are no configuration pages for adding, removing or updating URL entries - you'd need to dig into the database to do that. I do plan on adding them at some point, but at the same time I don't want to worry about injection attacks or weak security given my beginners knowledge of PHP.
+> There are no configuration pages for adding, removing or
+> updating URL entries - you'd need to dig into the database to
+> do that. I do plan on adding them at some point, but at the
+> same time I don't want to worry about injection attacks or
+> weak security given my beginners knowledge of PHP.
 
-Two additional pages exist, also protected via the API key. The first, `config.php` simply lists the contents of the `Config` table. The second, `migrate.php` does a basic check of all IP addresses in the database, and anonymises them (if the `AnonymizeAddresses` parameter is set) 
+Two additional pages exist, also protected via the API key. The
+first, `config.php` simply lists the contents of the `Config`
+table. The second, `migrate.php` does a basic check of all IP
+addresses in the database, and anonymises them (if the
+`AnonymizeAddresses` parameter is set)
+
+[composer]: https://getcomposer.org/
