@@ -426,4 +426,28 @@ function add_redirect($title, $slug, $url)
 
   $db = null; 
 }
+
+function update_redirect($id, $enabled, $title, $slug, $url)
+{
+  $db = get_database_connection();
+
+  $sql =  'UPDATE [Url]'
+        . '   SET [Enabled] = :enabled'
+        . '     , [Title]   = :title'
+        . '     , [Slug]    = :slug'
+        . '     , [Url]     = :url'
+        . ' WHERE [Id]      = :id'
+        ;
+
+  $stmt = $db->prepare($sql);
+  $stmt->bindValue(':id', $id);
+  $stmt->bindValue(':enabled', $enabled);
+  $stmt->bindValue(':title', $title);
+  $stmt->bindValue(':slug', $slug);
+  $stmt->bindValue(':url', $url);
+
+  $stmt->execute();
+
+  $db = null; 
+}
 ?>
