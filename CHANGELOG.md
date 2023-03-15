@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.5.0
+
+### Added
+
+* Added navigation link for URLs
+* Added ability to edit each link
+
+### Fixed
+
+* URL list sorting was case sensitive
+
 ## 1.4.0
 
 ### Added
