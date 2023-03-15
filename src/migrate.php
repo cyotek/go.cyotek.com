@@ -34,6 +34,25 @@ function anonymise_table($tableName)
   return $total;
 }
 
+function update_system_version()
+{
+  update_configuration_field('SystemVersion', '1.5.0');
+}
+
+function update_configuration_field($name, $value)
+{
+  $db = get_database_connection();
+  
+  $sql = 'UPDATE [Config] '
+                . 'SET [Value] = :value '
+                . 'WHERE [Name] = :name';
+
+  $stmt = $db->prepare($sql);
+  $stmt->bindValue(':name', $name);
+  $stmt->bindValue(':value', $value);
+  $stmt->execute();
+}
+
 if(!is_valid_apikey())
   {
     write_forbidden('Migrate Data', 'Invalid API key.');
@@ -46,7 +65,7 @@ if(!is_valid_apikey())
 <div class='wrapper wrapper-90'>
   <h1>Data Migration</h1>
 
-<?php 
+  <?php 
 
 if(should_anonymise_ip_address())
 {
@@ -60,6 +79,8 @@ else
   echo '<p>No migration performed.</p>';
 }
  ?>
+
+ <?php update_system_version(); ?>
 
 </div>
 <?php write_footer_html() ?>
