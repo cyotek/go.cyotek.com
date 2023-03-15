@@ -25,7 +25,7 @@
     }
 
     $db = get_database_connection();
-    $result = $db->query('SELECT [Id], [Enabled], [Title], [Slug], [Url], [LastHit], [HitCount] FROM [UrlSummary] ORDER BY [Title]');
+    $result = $db->query('SELECT [Id], [Enabled], [Title], [Slug], [Url], [LastHit], [HitCount] FROM [UrlSummary] ORDER BY [Title] COLLATE NOCASE ASC');
 ?>
 
 <?php write_header_html('Redirects Summary') ?>
