@@ -95,6 +95,7 @@
       <div>
         <input id="url" name="url" type="text" maxlength="255"
           value="<?php echo $row['Url'] ?>" class="url-editor" />
+        <a href="<?php echo $row['Url'] ?>" title="Visit <?php echo $row['Url'] ?>">&#11179;</a>
       </div>
       <div class="right"><?php echo($row['HitCount']) ?></div>
       <div>
