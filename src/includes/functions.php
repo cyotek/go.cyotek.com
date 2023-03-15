@@ -378,7 +378,7 @@ function write_error($code)
 function get_footer_html()
 {
   return '<footer>
-  <p>Copyright &copy; 2018 Cyotek Ltd. All Rights Reserved.</p>
+  <p>Copyright &copy; 2018-2023 Cyotek Ltd. All Rights Reserved.</p>
   <p>System Version ' . get_system_version() . ' / Schema Version ' . get_schema_version() . '</p>
 </footer></body></html>';
 }
