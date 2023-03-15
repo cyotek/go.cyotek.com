@@ -1,4 +1,5 @@
 vendor/
+private/
 
 *.db
 res/redirects.db.data.sql
